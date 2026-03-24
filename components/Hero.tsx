@@ -22,7 +22,7 @@ export default function Hero() {
       />
 
       {/* Background texture layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-warm-900/60 via-warm-900/25 to-warm-900/60" />
+      <div className="absolute inset-0 bg-linear-to-b from-warm-900/78 via-warm-900/48 to-warm-900/78" />
 
       {/* Subtle grain overlay */}
       <div
@@ -40,7 +40,7 @@ export default function Hero() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-warm-400/40 to-transparent"
+        className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-warm-400/40 to-transparent"
       />
 
       {/* Content */}
@@ -50,7 +50,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="label-sm text-warm-400 mb-8 tracking-widest3"
+          className="label-sm text-warm-300 mb-8 tracking-widest"
         >
           Майсторски класове · 2026
         </motion.p>
@@ -60,7 +60,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="heading-xl text-white mb-6 text-balance"
+          className="heading-xl text-white mb-6 text-balance [text-shadow:0_2px_18px_rgba(0,0,0,0.38)]"
         >
           Професионални
           <br />
@@ -82,11 +82,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0 }}
-          className="text-warm-300 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-xl mx-auto"
+          className="text-warm-200 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-xl mx-auto [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
         >
           IntraSculpt™ · BLEPH EFFECT™ · Face Massage Mastery
           <br />
-          <span className="text-warm-400 text-base">София · Варна</span>
+          <span className="mt-2 inline-flex items-center rounded-full border border-white/35 bg-white/10 px-4 py-1.5 text-base md:text-lg font-medium tracking-wide text-white backdrop-blur-[1px]">
+            София · Варна
+          </span>
         </motion.p>
 
         {/* CTA */}
@@ -98,7 +100,7 @@ export default function Hero() {
         >
           <button
             onClick={() => openContact()}
-            className="group inline-flex items-center gap-3 bg-white text-warm-900 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-100 transition-all duration-300 rounded-none cursor-pointer"
+            className="group inline-flex items-center gap-3 bg-white text-warm-900 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-100 transition-all duration-300 rounded-none cursor-pointer shadow-[0_8px_30px_rgba(0,0,0,0.24)] hover:-translate-y-0.5"
           >
             Запиши се сега
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
@@ -107,7 +109,7 @@ export default function Hero() {
           </button>
           <Link
             href="#courses"
-            className="inline-flex items-center gap-3 border border-white/30 text-white/80 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:border-white/60 hover:text-white transition-all duration-300 rounded-none"
+            className="inline-flex items-center gap-3 border border-white/50 bg-black/15 text-white px-10 py-4 text-sm font-medium tracking-widest uppercase hover:border-white/80 hover:bg-black/25 transition-all duration-300 rounded-none"
           >
             Обученията
           </Link>
@@ -125,7 +127,7 @@ export default function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-px h-8 bg-gradient-to-b from-warm-400 to-transparent"
+          className="w-px h-8 bg-linear-to-b from-warm-400 to-transparent"
         />
       </motion.div>
 
@@ -134,7 +136,7 @@ export default function Hero() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-warm-400/40 to-transparent"
+        className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-warm-400/40 to-transparent"
       />
     </section>
   );

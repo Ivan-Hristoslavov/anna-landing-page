@@ -95,16 +95,16 @@ export default function Timeline() {
           <div className="divider-line mb-8" />
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-8">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-2.5 rounded-full border border-warm-200 bg-parchment px-3 py-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-warm-900" />
-              <span className="text-xs text-warm-500 tracking-wide">
+              <span className="text-xs text-warm-600 tracking-wide">
                 София
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5 rounded-full border border-warm-200 bg-parchment px-3 py-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-warm-400" />
-              <span className="text-xs text-warm-500 tracking-wide">
+              <span className="text-xs text-warm-600 tracking-wide">
                 Варна
               </span>
             </div>
@@ -133,7 +133,7 @@ export default function Timeline() {
                   {/* Mobile layout */}
                   <div className="flex md:hidden items-start gap-6 pl-0">
                     {/* Dot */}
-                    <div className="relative flex-shrink-0 mt-1.5">
+                    <div className="relative shrink-0 mt-1.5">
                       <div
                         className={`w-3 h-3 rounded-full ${styles.dot} ring-4 ring-white relative z-10`}
                       />
@@ -263,7 +263,7 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.8 }}
-          className="mt-16 pt-14 border-t border-warm-100 text-center"
+          className="mt-16 pt-14 border-t border-warm-100 text-center bg-parchment/60 rounded-3xl px-4 py-10"
         >
           <p className="label-sm mb-4">Готови ли сте?</p>
           <h3 className="font-playfair text-2xl md:text-3xl font-light text-warm-900 mb-8">
@@ -271,7 +271,7 @@ export default function Timeline() {
           </h3>
           <button
             onClick={() => openContact()}
-            className="group inline-flex items-center gap-3 bg-warm-900 text-white px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-700 transition-all duration-300"
+            className="group inline-flex items-center gap-3 bg-warm-900 text-white px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-700 transition-all duration-300 shadow-[0_10px_35px_rgba(35,30,27,0.24)] hover:-translate-y-0.5"
           >
             Запиши се сега
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
