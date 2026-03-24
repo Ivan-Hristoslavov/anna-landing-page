@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const REGISTRATION_URL = "https://forms.gle/your-form-id";
+import Image from "next/image";
 
 interface Course {
   name: string;
@@ -72,54 +71,16 @@ const courseData: CityGroup[] = [
   },
 ];
 
-const ImagePlaceholder = ({
-  className,
-  index,
-}: {
-  className?: string;
-  index: number;
-}) => (
-  <div
-    className={`relative bg-warm-100 rounded-2xl border border-warm-200 overflow-hidden flex flex-col items-center justify-center gap-3 ${className}`}
-    style={{ minHeight: 200 }}
-  >
-    <div className="w-10 h-10 rounded-full border border-warm-300 flex items-center justify-center">
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="text-warm-400"
-      >
-        <rect
-          x="3"
-          y="3"
-          width="18"
-          height="18"
-          rx="2"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
-        <path
-          d="M3 14l5-5 4 4 3-3 6 6"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </div>
-    <p className="text-xs text-warm-400 font-light tracking-wide text-center px-4">
-      Място за снимка
-      <br />
-      <span className="text-warm-300">(ще бъде добавена по-късно)</span>
-    </p>
-    <span className="absolute bottom-3 right-3 text-[10px] text-warm-300 font-light">
-      {String(index).padStart(2, "0")}
-    </span>
-  </div>
-);
+const cityImages = [
+  "/images/other/face-massage-1.jpeg",
+  "/images/other/face-massage-2.jpeg",
+];
+
+const galleryImages = [
+  "/images/other/Anna-wach-camera.jpeg",
+  "/images/other/face-massage-1.jpeg",
+  "/images/other/face-massage-2.jpeg",
+];
 
 const containerVariants = {
   hidden: {},
@@ -210,14 +171,6 @@ export default function Courses() {
                     </p>
                   </motion.div>
                 ))}
-
-                {/* Image placeholder per city */}
-                <motion.div variants={itemVariants}>
-                  <ImagePlaceholder
-                    className="w-full aspect-[16/7]"
-                    index={gi + 1}
-                  />
-                </motion.div>
               </motion.div>
             </motion.div>
           ))}
@@ -232,13 +185,18 @@ export default function Courses() {
           className="mt-20"
         >
           <p className="label-sm text-center mb-8">Галерия</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[3, 4, 5, 6].map((n) => (
-              <ImagePlaceholder
-                key={n}
-                className="aspect-[3/4] w-full"
-                index={n}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {galleryImages.map((src, i) => (
+              <div key={i} className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden">
+                <Image
+                  src={src}
+                  alt={`Галерия ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  quality={85}
+                  className="object-cover"
+                />
+              </div>
             ))}
           </div>
         </motion.div>

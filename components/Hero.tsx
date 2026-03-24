@@ -2,12 +2,24 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-warm-900">
+      {/* Hero image */}
+      <Image
+        src="/images/hero/hero-image.jpeg"
+        alt="Anna Training"
+        fill
+        sizes="100vw"
+        quality={90}
+        className="object-cover object-center opacity-65"
+        priority
+      />
+
       {/* Background texture layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-warm-900 via-warm-800 to-warm-900 opacity-95" />
+      <div className="absolute inset-0 bg-gradient-to-b from-warm-900/60 via-warm-900/25 to-warm-900/60" />
 
       {/* Subtle grain overlay */}
       <div
@@ -82,7 +94,7 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <Link
-            href="#qr-section"
+            href="#courses"
             className="group inline-flex items-center gap-3 bg-white text-warm-900 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-100 transition-all duration-300 rounded-none"
           >
             Запиши се
