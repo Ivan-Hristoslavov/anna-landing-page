@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useContact } from "@/app/contact-context";
 
 interface TimelineEvent {
   date: string;
@@ -53,6 +54,13 @@ const events: TimelineEvent[] = [
     cityColor: "sofia",
     duration: "3 дни",
   },
+  {
+    date: "18 юни 2026",
+    name: "BLEPH EFFECT™",
+    city: "София",
+    cityColor: "sofia",
+    duration: "1 ден",
+  },
 ];
 
 const cityStyles = {
@@ -67,8 +75,10 @@ const cityStyles = {
 };
 
 export default function Timeline() {
+  const { openContact } = useContact();
+
   return (
-    <section className="section-padding bg-white">
+    <section id="timeline" className="section-padding bg-white">
       <div className="max-w-4xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -144,9 +154,18 @@ export default function Timeline() {
                       <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1">
                         {event.name}
                       </h4>
-                      <p className="text-xs text-warm-500 font-light">
+                      <p className="text-xs text-warm-500 font-light mb-3">
                         {event.date}
                       </p>
+                      <button
+                        onClick={() =>
+                          openContact(event.name, event.city, event.date)
+                        }
+                        className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                      >
+                        Запиши се
+                        <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                      </button>
                     </div>
                   </div>
 
@@ -171,9 +190,20 @@ export default function Timeline() {
                           <h4 className="font-playfair text-xl font-medium text-warm-900 mb-1 text-right">
                             {event.name}
                           </h4>
-                          <p className="text-xs text-warm-500 font-light text-right">
+                          <p className="text-xs text-warm-500 font-light text-right mb-3">
                             {event.date}
                           </p>
+                          <div className="flex justify-end">
+                            <button
+                              onClick={() =>
+                                openContact(event.name, event.city, event.date)
+                              }
+                              className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                            >
+                              Запиши се
+                              <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -204,9 +234,18 @@ export default function Timeline() {
                           <h4 className="font-playfair text-xl font-medium text-warm-900 mb-1">
                             {event.name}
                           </h4>
-                          <p className="text-xs text-warm-500 font-light">
+                          <p className="text-xs text-warm-500 font-light mb-3">
                             {event.date}
                           </p>
+                          <button
+                            onClick={() =>
+                              openContact(event.name, event.city, event.date)
+                            }
+                            className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                          >
+                            Запиши се
+                            <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -216,6 +255,42 @@ export default function Timeline() {
             })}
           </div>
         </div>
+
+        {/* CTA */}
+        <motion.div
+          id="enroll"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.8 }}
+          className="mt-16 pt-14 border-t border-warm-100 text-center"
+        >
+          <p className="label-sm mb-4">Готови ли сте?</p>
+          <h3 className="font-playfair text-2xl md:text-3xl font-light text-warm-900 mb-8">
+            Запишете се сега
+          </h3>
+          <button
+            onClick={() => openContact()}
+            className="group inline-flex items-center gap-3 bg-warm-900 text-white px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-700 transition-all duration-300"
+          >
+            Запиши се сега
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </button>
+          <p className="mt-5 text-xs text-warm-400 font-light">
+            или пишете директно на{" "}
+            <a
+              href="mailto:contact@anna.london"
+              className="text-warm-600 hover:text-warm-900 transition-colors underline underline-offset-2"
+            >
+              contact@anna.london
+            </a>
+          </p>
+          <p className="mt-2 text-[11px] text-warm-300 font-light">
+            Моля, посочете обучение, град и дата в запитването.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useContact } from "@/app/contact-context";
 
 interface Course {
   name: string;
@@ -41,6 +42,12 @@ const courseData: CityGroup[] = [
         description:
           "Базово ниво – изкуство и майсторство на лицевия масаж.",
       },
+      {
+        name: "BLEPH EFFECT™",
+        date: "18 юни 2026",
+        badge: "1 ден",
+        description: "Неинвазивен лифтинг за околоочната зона.",
+      },
     ],
   },
   {
@@ -71,11 +78,6 @@ const courseData: CityGroup[] = [
   },
 ];
 
-const cityImages = [
-  "/images/other/face-massage-1.jpeg",
-  "/images/other/face-massage-2.jpeg",
-];
-
 const galleryImages = [
   "/images/other/Anna-wach-camera.jpeg",
   "/images/other/face-massage-1.jpeg",
@@ -99,6 +101,8 @@ const itemVariants = {
 };
 
 export default function Courses() {
+  const { openContact } = useContact();
+
   return (
     <section id="courses" className="section-padding bg-parchment">
       <div className="max-w-7xl mx-auto">
@@ -114,7 +118,10 @@ export default function Courses() {
           <h2 className="heading-lg text-warm-900 mb-6">
             Предстоящи обучения
           </h2>
-          <div className="divider-line" />
+          <div className="divider-line mb-8" />
+          <p className="text-sm text-warm-500 font-light max-w-sm mx-auto leading-relaxed">
+            Изберете обучение и натиснете „Запиши се" — ще попълним детайлите автоматично.
+          </p>
         </motion.div>
 
         {/* City columns */}
@@ -166,9 +173,20 @@ export default function Courses() {
                       <span className="w-4 h-px bg-warm-300 inline-block" />
                       {course.date}
                     </p>
-                    <p className="text-sm text-warm-600 font-light leading-relaxed">
+                    <p className="text-sm text-warm-600 font-light leading-relaxed mb-4">
                       {course.description}
                     </p>
+                    <button
+                      onClick={() =>
+                        openContact(course.name, group.city, course.date)
+                      }
+                      className="group/btn inline-flex items-center gap-2 text-[11px] font-medium tracking-widest uppercase text-warm-500 hover:text-warm-900 transition-colors duration-200"
+                    >
+                      Запиши се
+                      <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">
+                        →
+                      </span>
+                    </button>
                   </motion.div>
                 ))}
               </motion.div>
@@ -176,7 +194,7 @@ export default function Courses() {
           ))}
         </div>
 
-        {/* Gallery placeholders */}
+        {/* Gallery */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}

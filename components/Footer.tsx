@@ -27,10 +27,10 @@ export default function Footer() {
             </p>
             <ul className="space-y-2.5">
               {[
-                { label: "Начало", href: "#" },
+                { label: "Начало", href: "#home" },
                 { label: "Обучения", href: "#courses" },
-                { label: "График", href: "#courses" },
-                { label: "Записване", href: "#courses" },
+                { label: "График", href: "#timeline" },
+                { label: "Записване", href: "#enroll" },
               ].map((link) => (
                 <li key={link.label}>
                   <a
@@ -61,21 +61,10 @@ export default function Footer() {
                   <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
                 </svg>
                 <a
-                  href="mailto:info@anna-trainings.bg"
+                  href="mailto:contact@anna.london"
                   className="hover:text-warm-200 transition-colors duration-200"
                 >
-                  info@anna-trainings.bg
-                </a>
-              </li>
-              <li className="flex items-start gap-2">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="mt-0.5 flex-shrink-0 text-warm-600">
-                  <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.25 1.02l-2.2 2.2z" fill="currentColor"/>
-                </svg>
-                <a
-                  href="tel:+359000000000"
-                  className="hover:text-warm-200 transition-colors duration-200"
-                >
-                  +359 000 000 000
+                  contact@anna.london
                 </a>
               </li>
             </ul>
@@ -96,15 +85,15 @@ export default function Footer() {
           </p>
 
           <div className="flex items-center gap-5">
-            <a href="#" className="hover:text-warm-400 transition-colors duration-200">
-              Политика за поверителност
+            <a href="/privacy" className="hover:text-warm-400 transition-colors duration-200">
+              Поверителност
             </a>
             <span className="text-warm-800">·</span>
-            <a href="#" className="hover:text-warm-400 transition-colors duration-200">
-              Условия за ползване
+            <a href="/terms" className="hover:text-warm-400 transition-colors duration-200">
+              Условия
             </a>
             <span className="text-warm-800">·</span>
-            <a href="#" className="hover:text-warm-400 transition-colors duration-200">
+            <a href="/privacy#cookies" className="hover:text-warm-400 transition-colors duration-200">
               Бисквитки
             </a>
           </div>

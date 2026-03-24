@@ -3,10 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useContact } from "@/app/contact-context";
 
 export default function Hero() {
+  const { openContact } = useContact();
+
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-warm-900">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-warm-900">
       {/* Hero image */}
       <Image
         src="/images/hero/hero-image.jpeg"
@@ -93,15 +96,15 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.2 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Link
-            href="#courses"
-            className="group inline-flex items-center gap-3 bg-white text-warm-900 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-100 transition-all duration-300 rounded-none"
+          <button
+            onClick={() => openContact()}
+            className="group inline-flex items-center gap-3 bg-white text-warm-900 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:bg-warm-100 transition-all duration-300 rounded-none cursor-pointer"
           >
-            Запиши се
+            Запиши се сега
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
-          </Link>
+          </button>
           <Link
             href="#courses"
             className="inline-flex items-center gap-3 border border-white/30 text-white/80 px-10 py-4 text-sm font-medium tracking-widest uppercase hover:border-white/60 hover:text-white transition-all duration-300 rounded-none"

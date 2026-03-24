@@ -7,7 +7,9 @@
       "Bash(cat /Users/ivanivanov/Documents/Projects/anna-landing-page/node_modules/@heroui/react/package.json | python3 -c \"import json,sys; p=json.load\\(sys.stdin\\); print\\(list\\(p.get\\('exports',{}\\).keys\\(\\)\\)[:20]\\)\")",
       "Bash(cat /Users/ivanivanov/Documents/Projects/anna-landing-page/node_modules/@heroui/react/package.json | python3 -c \"\nimport json,sys\np=json.load\\(sys.stdin\\)\nexports = p.get\\('exports', {}\\)\n# Find modal and disclosure related\nfor k in sorted\\(exports.keys\\(\\)\\):\n    if any\\(x in k for x in ['modal', 'disclos', 'button', 'provider', 'disclosure']\\):\n        print\\(k\\)\n\")",
       "Bash(cat /Users/ivanivanov/Documents/Projects/anna-landing-page/node_modules/@heroui/react/dist/hooks/use-overlay-state.d.ts 2>/dev/null || find /Users/ivanivanov/Documents/Projects/anna-landing-page/node_modules/@heroui/react/dist -name \"use-overlay-state*\" 2>/dev/null | head -5)",
-      "WebFetch(domain:serenity.rapid-frame.co.uk)"
+      "WebFetch(domain:serenity.rapid-frame.co.uk)",
+      "Bash(npx tsc --noEmit 2>&1 | head -40)",
+      "Bash(npx tsc --noEmit 2>&1)"
     ]
   }
 }
