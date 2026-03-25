@@ -50,7 +50,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="label-sm text-warm-300 mb-8 tracking-widest"
+          className="text-[12px] md:text-[13px] leading-none text-warm-200 mb-7 tracking-widest"
         >
           Майсторски класове · 2026
         </motion.p>
@@ -82,12 +82,15 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0 }}
-          className="text-warm-200 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-xl mx-auto [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
+          className="text-warm-200 text-sm md:text-base font-light leading-relaxed mb-12 max-w-xl mx-auto [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
         >
-          IntraSculpt™ · BLEPH EFFECT™ · Face Massage Mastery
-          <br />
-          <span className="mt-2 inline-flex items-center rounded-full border border-white/35 bg-white/10 px-4 py-1.5 text-base md:text-lg font-medium tracking-wide text-white backdrop-blur-[1px]">
-            София · Варна
+          <span className="whitespace-nowrap">
+            INTRASCULPT™ · BLEPH EFFECT™ · FACE MASSAGE MASTERY LEVEL 1
+          </span>
+          <span className="mt-2 block">
+            <span className="inline-flex items-center rounded-full border border-white/35 bg-white/10 px-2.5 py-1.5 text-xs md:text-sm font-medium tracking-wide text-white backdrop-blur-[1px]">
+              София · Варна
+            </span>
           </span>
         </motion.p>
 
@@ -123,7 +126,7 @@ export default function Hero() {
         transition={{ duration: 1, delay: 2 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="label-sm text-warm-500">Прелисти</span>
+        <span className="label-sm text-warm-500">Надолу</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}

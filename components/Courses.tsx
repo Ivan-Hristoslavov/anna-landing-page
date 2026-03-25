@@ -23,7 +23,7 @@ const courseData: CityGroup[] = [
     cityEn: "Sofia",
     courses: [
       {
-        name: "IntraSculpt™",
+        name: "INTRASCULPT™",
         date: "30–31 март 2026",
         badge: "2 дни",
         description:
@@ -36,9 +36,9 @@ const courseData: CityGroup[] = [
         description: "Неинвазивен лифтинг за околоочната зона.",
       },
       {
-        name: "Face Massage Mastery",
+        name: "FACE MASSAGE MASTERY LEVEL 1",
         date: "15, 16, 17 юни 2026",
-        badge: "Level 1 · 3 дни",
+        badge: "LEVEL 1 · 3 дни",
         description:
           "Базово ниво – изкуство и майсторство на лицевия масаж.",
       },
@@ -55,9 +55,9 @@ const courseData: CityGroup[] = [
     cityEn: "Varna",
     courses: [
       {
-        name: "Face Massage Mastery",
+        name: "FACE MASSAGE MASTERY LEVEL 1",
         date: "4, 5, 6 април 2026",
-        badge: "Level 1 · 3 дни",
+        badge: "LEVEL 1 · 3 дни",
         description:
           "Базово ниво – изкуство и майсторство на лицевия масаж.",
       },
@@ -68,7 +68,7 @@ const courseData: CityGroup[] = [
         description: "Неинвазивен лифтинг за околоочната зона.",
       },
       {
-        name: "IntraSculpt™",
+        name: "INTRASCULPT™",
         date: "8–9 април 2026",
         badge: "2 дни",
         description:
@@ -102,6 +102,26 @@ const itemVariants = {
 
 export default function Courses() {
   const { openContact } = useContact();
+
+  const renderCourseBadge = (badge: string) => {
+    const parts = badge.split("·").map((p) => p.trim());
+    const isSplit = parts.length === 2 && parts[0] && parts[1];
+
+    return (
+      <span className="shrink-0 text-[10px] font-medium tracking-wider uppercase text-warm-500 bg-warm-50 border border-warm-200 px-2.5 py-1 rounded-full">
+        {isSplit ? (
+          <span className="flex flex-col items-center leading-tight">
+            <span className="text-[11px] font-semibold tracking-widest text-warm-800">
+              {parts[0]}
+            </span>
+            <span className="text-[10px] mt-0.5">{parts[1]}</span>
+          </span>
+        ) : (
+          badge
+        )}
+      </span>
+    );
+  };
 
   return (
     <section id="courses" className="section-padding bg-parchment">
@@ -163,14 +183,10 @@ export default function Courses() {
                     className="group bg-white rounded-2xl border border-warm-100 p-6 hover:border-warm-300 hover:shadow-[0_14px_45px_rgba(35,30,27,0.12)] hover:-translate-y-0.5 transition-all duration-300"
                   >
                     <div className="flex items-start justify-between gap-4 mb-3">
-                      <h4 className="font-playfair text-xl font-medium text-warm-900 group-hover:text-warm-700 transition-colors">
+                      <h4 className="font-playfair text-lg md:text-xl font-medium text-warm-900 group-hover:text-warm-700 transition-colors">
                         {course.name}
                       </h4>
-                      {course.badge && (
-                        <span className="shrink-0 text-[10px] font-medium tracking-wider uppercase text-warm-500 bg-warm-50 border border-warm-200 px-2.5 py-1 rounded-full">
-                          {course.badge}
-                        </span>
-                      )}
+                      {course.badge && renderCourseBadge(course.badge)}
                     </div>
                     <p className="text-sm font-medium text-warm-500 mb-3 flex items-center gap-2">
                       <span className="w-4 h-px bg-warm-300 inline-block" />

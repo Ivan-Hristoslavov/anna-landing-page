@@ -19,7 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Анна – Професионални обучения в България",
   description:
-    "Премиум обучения по лицев масаж, скулптуриране и козметология. IntraSculpt™, BLEPH EFFECT™, Face Massage Mastery.",
+    "Премиум обучения по лицев масаж, скулптуриране и козметология. INTRASCULPT™, BLEPH EFFECT™, FACE MASSAGE MASTERY LEVEL 1.",
   keywords: [
     "обучения",
     "лицев масаж",

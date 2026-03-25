@@ -13,15 +13,15 @@ interface Session {
 
 const SCHEDULE: Record<string, Session[]> = {
   "София": [
-    { course: "IntraSculpt™",              date: "30–31 март 2026" },
+    { course: "INTRASCULPT™",            date: "30–31 март 2026" },
     { course: "BLEPH EFFECT™",             date: "1 април 2026" },
-    { course: "Face Massage Mastery Level 1", date: "15, 16, 17 юни 2026" },
+    { course: "FACE MASSAGE MASTERY LEVEL 1", date: "15, 16, 17 юни 2026" },
     { course: "BLEPH EFFECT™",             date: "18 юни 2026" },
   ],
   "Варна": [
-    { course: "Face Massage Mastery Level 1", date: "4, 5, 6 април 2026" },
+    { course: "FACE MASSAGE MASTERY LEVEL 1", date: "4, 5, 6 април 2026" },
     { course: "BLEPH EFFECT™",             date: "7 април 2026" },
-    { course: "IntraSculpt™",              date: "8–9 април 2026" },
+    { course: "INTRASCULPT™",            date: "8–9 април 2026" },
   ],
 };
 

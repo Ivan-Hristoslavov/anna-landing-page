@@ -14,7 +14,7 @@ interface TimelineEvent {
 const events: TimelineEvent[] = [
   {
     date: "30–31 март 2026",
-    name: "IntraSculpt™",
+    name: "INTRASCULPT™",
     city: "София",
     cityColor: "sofia",
     duration: "2 дни",
@@ -28,7 +28,7 @@ const events: TimelineEvent[] = [
   },
   {
     date: "4–6 април 2026",
-    name: "Face Massage Mastery Level 1",
+    name: "FACE MASSAGE MASTERY LEVEL 1",
     city: "Варна",
     cityColor: "varna",
     duration: "3 дни",
@@ -42,14 +42,14 @@ const events: TimelineEvent[] = [
   },
   {
     date: "8–9 април 2026",
-    name: "IntraSculpt™",
+    name: "INTRASCULPT™",
     city: "Варна",
     cityColor: "varna",
     duration: "2 дни",
   },
   {
     date: "15–17 юни 2026",
-    name: "Face Massage Mastery Level 1",
+    name: "FACE MASSAGE MASTERY LEVEL 1",
     city: "София",
     cityColor: "sofia",
     duration: "3 дни",
@@ -151,7 +151,7 @@ export default function Timeline() {
                           {event.duration}
                         </span>
                       </div>
-                      <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1">
+                      <h4 className="font-playfair text-base sm:text-lg font-medium text-warm-900 mb-1">
                         {event.name}
                       </h4>
                       <p className="text-xs text-warm-500 font-light mb-3">
@@ -187,7 +187,7 @@ export default function Timeline() {
                               {event.city}
                             </span>
                           </div>
-                          <h4 className="font-playfair text-xl font-medium text-warm-900 mb-1 text-right">
+                          <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1 text-right">
                             {event.name}
                           </h4>
                           <p className="text-xs text-warm-500 font-light text-right mb-3">
@@ -231,7 +231,7 @@ export default function Timeline() {
                               {event.duration}
                             </span>
                           </div>
-                          <h4 className="font-playfair text-xl font-medium text-warm-900 mb-1">
+                          <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1">
                             {event.name}
                           </h4>
                           <p className="text-xs text-warm-500 font-light mb-3">
