@@ -87,13 +87,13 @@ export default function Hero() {
 
       {/* Content + scroll hint — flex keeps „Надолу“ visible (no overflow clip) */}
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-4 py-3 text-center sm:px-6 sm:py-5 md:py-6">
+        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-5 py-9 text-center sm:px-6 sm:py-5 md:py-6">
         {/* Logo — wrapper sets width so Image can use w-full h-auto (avoids Next.js aspect warning) */}
         <motion.div
           initial={m.hiddenYLight()}
           animate={{ opacity: 1, y: 0 }}
           transition={m.t(0.6, stagger.logo)}
-          className="flex justify-center mb-0"
+          className="flex justify-center mb-1 sm:mb-0"
         >
           <div className="w-[min(45vw,158px)] sm:w-[min(44vw,198px)] md:w-[min(42vw,238px)] max-w-full shrink-0">
             <Image
@@ -114,7 +114,7 @@ export default function Hero() {
           initial={m.hiddenY(12)}
           animate={{ opacity: 1, y: 0 }}
           transition={m.t(0.8, stagger.eyebrow)}
-          className="-mt-2.5 text-[11px] leading-none text-warm-200 mb-2 sm:mb-3 tracking-widest sm:-mt-3 sm:text-[12px] md:text-[13px]"
+          className="mt-0 text-[11px] leading-none text-warm-200 mb-5 tracking-widest sm:-mt-3 sm:mb-3 sm:text-[12px] md:text-[13px]"
         >
           Майсторски класове · 2026
         </motion.p>
@@ -124,7 +124,7 @@ export default function Hero() {
           initial={m.hiddenY(22)}
           animate={{ opacity: 1, y: 0 }}
           transition={m.tEase(1, stagger.title)}
-          className="heading-xl text-white mb-3 text-balance sm:mb-4 [text-shadow:0_2px_18px_rgba(0,0,0,0.38)]"
+          className="heading-xl text-white text-balance max-sm:mb-7 sm:mb-4 [text-shadow:0_2px_18px_rgba(0,0,0,0.38)]"
         >
           Професионални
           <br />
@@ -138,7 +138,7 @@ export default function Hero() {
           initial={m.hiddenLine()}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={m.t(0.8, stagger.divider)}
-          className="divider-line mb-4 sm:mb-5"
+          className="divider-line max-sm:mb-6 sm:mb-5"
         />
 
         {/* Subtitle */}
@@ -146,12 +146,12 @@ export default function Hero() {
           initial={m.hiddenY(12)}
           animate={{ opacity: 1, y: 0 }}
           transition={m.t(0.8, stagger.subtitle)}
-          className="text-warm-200 text-xs sm:text-sm md:text-base font-light leading-snug sm:leading-relaxed mb-4 max-w-xl mx-auto sm:mb-6 md:mb-8 [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
+          className="text-warm-200 text-xs sm:text-sm md:text-base font-light leading-snug sm:leading-relaxed max-w-xl mx-auto px-1 sm:px-0 max-sm:mb-8 sm:mb-6 md:mb-8 [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
         >
           <span className="text-balance md:whitespace-nowrap">
             INTRASCULPT™ · BLEPH EFFECT™ · FACE MASSAGE MASTERY LEVEL 1
           </span>
-          <span className="mt-2 block">
+          <span className="mt-4 block sm:mt-2">
             <span className="inline-flex items-center rounded-full border border-white/35 bg-white/10 px-2.5 py-1.5 text-xs md:text-sm font-medium tracking-wide text-white backdrop-blur-[1px]">
               София · Варна
             </span>
@@ -163,7 +163,7 @@ export default function Hero() {
           initial={m.hiddenY(12)}
           animate={{ opacity: 1, y: 0 }}
           transition={m.t(0.8, stagger.cta)}
-          className="flex w-full max-w-md flex-col sm:max-w-none sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mx-auto"
+          className="flex w-full max-w-md flex-col sm:max-w-none sm:flex-row gap-5 sm:gap-4 justify-center items-stretch sm:items-center mx-auto"
         >
           <button
             type="button"
@@ -189,7 +189,7 @@ export default function Hero() {
           initial={m.fade()}
           animate={{ opacity: 1 }}
           transition={m.t(1, stagger.scroll)}
-          className="flex shrink-0 flex-col items-center gap-1.5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-1"
+          className="flex shrink-0 flex-col items-center gap-2.5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 sm:pt-1 sm:gap-1.5 sm:pb-[max(1.25rem,env(safe-area-inset-bottom))]"
         >
           <span className="label-sm text-warm-500">Надолу</span>
           <motion.div
