@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Анна – Професионални обучения в България",
   description:
     "Премиум обучения по лицев масаж, скулптуриране и козметология. INTRASCULPT™, BLEPH EFFECT™, FACE MASSAGE MASTERY LEVEL 1.",
+  icons: {
+    icon: "/images/logo/anna-hd-logo.png",
+  },
   keywords: [
     "обучения",
     "лицев масаж",
