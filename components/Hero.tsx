@@ -148,8 +148,11 @@ export default function Hero() {
           transition={m.t(0.8, stagger.subtitle)}
           className="text-warm-200 text-xs sm:text-sm md:text-base font-light leading-snug sm:leading-relaxed max-w-xl mx-auto px-1 sm:px-0 max-sm:mb-8 sm:mb-6 md:mb-8 [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]"
         >
-          <span className="text-balance md:whitespace-nowrap">
-            INTRASCULPT™ · BLEPH EFFECT™ · FACE MASSAGE MASTERY LEVEL 1
+          <span className="flex w-full flex-wrap justify-center">
+            {/* Keep the whole subtitle line together (either one line, or move below) */}
+            <span className="whitespace-nowrap text-balance">
+              INTRASCULPT™ · BLEPH EFFECT™ · FACE MASSAGE MASTERY LEVEL 1
+            </span>
           </span>
           <span className="mt-4 block sm:mt-2">
             <span className="inline-flex items-center rounded-full border border-white/35 bg-white/10 px-2.5 py-1.5 text-xs md:text-sm font-medium tracking-wide text-white backdrop-blur-[1px]">

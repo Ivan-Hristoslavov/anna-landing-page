@@ -9,6 +9,7 @@ interface TimelineEvent {
   city: string;
   cityColor: "sofia" | "varna";
   duration: string;
+  soldOut?: boolean;
 }
 
 const events: TimelineEvent[] = [
@@ -25,6 +26,7 @@ const events: TimelineEvent[] = [
     city: "София",
     cityColor: "sofia",
     duration: "1 ден",
+    soldOut: true,
   },
   {
     date: "4–6 април 2026",
@@ -39,6 +41,7 @@ const events: TimelineEvent[] = [
     city: "Варна",
     cityColor: "varna",
     duration: "1 ден",
+    soldOut: true,
   },
   {
     date: "8–9 април 2026",
@@ -76,6 +79,12 @@ const cityStyles = {
 
 export default function Timeline() {
   const { openContact } = useContact();
+
+  const renderSoldOutPill = () => (
+    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
+      Sold out
+    </span>
+  );
 
   return (
     <section id="timeline" className="section-padding bg-white">
@@ -151,6 +160,9 @@ export default function Timeline() {
                           {event.duration}
                         </span>
                       </div>
+                      {event.soldOut && (
+                        <div className="mb-2">{renderSoldOutPill()}</div>
+                      )}
                       <h4 className="font-playfair text-base sm:text-lg font-medium text-warm-900 mb-1">
                         {event.name}
                       </h4>
@@ -187,6 +199,11 @@ export default function Timeline() {
                               {event.city}
                             </span>
                           </div>
+                          {event.soldOut && (
+                            <div className="flex justify-end mb-2">
+                              {renderSoldOutPill()}
+                            </div>
+                          )}
                           <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1 text-right">
                             {event.name}
                           </h4>
@@ -231,6 +248,9 @@ export default function Timeline() {
                               {event.duration}
                             </span>
                           </div>
+                          {event.soldOut && (
+                            <div className="mb-2">{renderSoldOutPill()}</div>
+                          )}
                           <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1">
                             {event.name}
                           </h4>

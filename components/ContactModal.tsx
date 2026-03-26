@@ -9,18 +9,19 @@ const EMAIL = "contact@anna.london";
 interface Session {
   course: string;
   date: string;
+  soldOut?: boolean;
 }
 
 const SCHEDULE: Record<string, Session[]> = {
   "София": [
     { course: "INTRASCULPT™",            date: "30–31 март 2026" },
-    { course: "BLEPH EFFECT™",             date: "1 април 2026" },
+    { course: "BLEPH EFFECT™",             date: "1 април 2026", soldOut: true },
     { course: "FACE MASSAGE MASTERY LEVEL 1", date: "15, 16, 17 юни 2026" },
     { course: "BLEPH EFFECT™",             date: "18 юни 2026" },
   ],
   "Варна": [
     { course: "FACE MASSAGE MASTERY LEVEL 1", date: "4, 5, 6 април 2026" },
-    { course: "BLEPH EFFECT™",             date: "7 април 2026" },
+    { course: "BLEPH EFFECT™",             date: "7 април 2026", soldOut: true },
     { course: "INTRASCULPT™",            date: "8–9 април 2026" },
   ],
 };
@@ -49,12 +50,19 @@ export default function ContactModal() {
   useEffect(() => {
     if (!state.isOpen) return;
     const courses = state.course ? [state.course] : [];
+    const city = state.city || "";
+    const course = state.course || "";
+    const date = state.date || "";
+
     setSelectedCourses(courses);
-    setSelectedCity(state.city || "");
-    // Pre-select session if course + date are both provided
-    setSelectedSessions(
-      state.course && state.date ? [`${state.course} — ${state.date}`] : []
-    );
+    setSelectedCity(city);
+
+    if (course && date) {
+      const preSession = `${course} — ${date}`;
+      setSelectedSessions([preSession]);
+    } else {
+      setSelectedSessions([]);
+    }
     setName("");
     setPhone("");
     setMsg("Моля, потвърдете наличните места и условията за участие.");
@@ -82,6 +90,19 @@ export default function ContactModal() {
     if (!selectedCourses.length) return all;
     return all.filter((s) => selectedCourses.includes(s.course));
   }, [selectedCity, selectedCourses]);
+
+  const soldOutSessionValues = useMemo<Set<string>>(() => {
+    const all = SCHEDULE[selectedCity] ?? [];
+    return new Set(
+      all
+        .filter((s) => s.soldOut)
+        .map((s) => `${s.course} — ${s.date}`)
+    );
+  }, [selectedCity]);
+
+  const hasSoldOutSelected = selectedSessions.some((s) =>
+    soldOutSessionValues.has(s)
+  );
 
   // Keep only sessions that still appear in the filtered list
   useEffect(() => {
@@ -132,9 +153,15 @@ export default function ContactModal() {
       ? selectedCourses.join(", ")
       : "—";
     const sessionList = selectedSessions.length
-      ? selectedSessions.join(", ")
+      ? selectedSessions
+          .map((s) => `${s}${soldOutSessionValues.has(s) ? " (лист за изчакване)" : ""}`)
+          .join(", ")
       : "—";
-    const subject = `Записване${selectedCourses[0] ? ` — ${selectedCourses[0]}` : ""}${selectedCity ? ` — ${selectedCity}` : ""}`;
+    const subjectBase = `Записване${selectedCourses[0] ? ` — ${selectedCourses[0]}` : ""}${selectedCity ? ` — ${selectedCity}` : ""}`;
+    const subject = hasSoldOutSelected
+      ? `${subjectBase} (лист за изчакване)`
+      : subjectBase;
+
     const body = [
       "Здравейте,",
       "",
@@ -143,6 +170,13 @@ export default function ContactModal() {
       `Обучение: ${courseList}`,
       `Град: ${selectedCity || "—"}`,
       `Сесии / дати: ${sessionList}`,
+      ...(hasSoldOutSelected
+        ? [
+            "",
+            "Статус: Лист за изчакване (местата за тези дати са изчерпани).",
+            "Ще се свържем при освободено място.",
+          ]
+        : []),
       "",
       `Иme и фамилия: ${name || "—"}`,
       `Телефон за връзка: ${phone || "—"}`,
@@ -155,7 +189,16 @@ export default function ContactModal() {
     ].join("\n");
 
     return `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [selectedCourses, selectedCity, selectedSessions, name, phone, msg]);
+  }, [
+    selectedCourses,
+    selectedCity,
+    selectedSessions,
+    soldOutSessionValues,
+    hasSoldOutSelected,
+    name,
+    phone,
+    msg,
+  ]);
 
   const handleSubmitClick = () => {
     const nextErrors = {
@@ -343,6 +386,7 @@ export default function ContactModal() {
                         {availableSessions.map((s) => {
                           const val = `${s.course} — ${s.date}`;
                           const checked = selectedSessions.includes(val);
+                          const isSoldOut = !!s.soldOut;
                           return (
                             <button
                               key={val}
@@ -351,7 +395,9 @@ export default function ContactModal() {
                               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-sm text-left transition-all duration-200 ${
                                 checked
                                   ? "border-warm-700 bg-warm-900 text-white"
-                                  : "border-warm-200 bg-warm-50 text-warm-700 hover:border-warm-400"
+                                  : isSoldOut
+                                    ? "border-red-200 bg-red-50 text-red-700 hover:border-red-300"
+                                    : "border-warm-200 bg-warm-50 text-warm-700 hover:border-warm-400"
                               }`}
                             >
                               <span
@@ -378,7 +424,14 @@ export default function ContactModal() {
                                   </svg>
                                 )}
                               </span>
-                              {s.course} — {s.date}
+                              <span className="flex-1">
+                                {s.course} — {s.date}
+                              </span>
+                              {s.soldOut && (
+                                <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
+                                  Sold out
+                                </span>
+                              )}
                             </button>
                           );
                         })}
@@ -388,6 +441,17 @@ export default function ContactModal() {
                       <p className="text-[11px] text-red-400 mt-1">
                         Моля, изберете поне една сесия/дата.
                       </p>
+                    )}
+                    {hasSoldOutSelected && (
+                      <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                        <p className="text-xs font-medium text-red-700">
+                          Това е изчерпана дата. Можете да се запишете в лист за
+                          изчакване.
+                        </p>
+                        <p className="text-[11px] text-red-600/90 mt-1">
+                          Ще изпратим имейл при свободно място по тези дати.
+                        </p>
+                      </div>
                     )}
                   </div>
                 )}
@@ -480,7 +544,9 @@ export default function ContactModal() {
                   onClick={handleSubmitClick}
                   className="block w-full text-center bg-warm-900 text-white text-[11px] font-medium tracking-widest uppercase py-3.5 rounded-xl hover:bg-warm-700 active:bg-warm-900 transition-colors duration-200 cursor-pointer"
                 >
-                  Изпрати запитване →
+                  {hasSoldOutSelected
+                    ? "Изпрати запитване (лист за изчакване) →"
+                    : "Изпрати запитване →"}
                 </button>
 
                 {/* Hint about mail app */}
@@ -531,9 +597,13 @@ export default function ContactModal() {
                         <button
                           type="button"
                           onClick={handleConfirmSend}
-                          className="px-3 py-1.5 rounded-lg bg-warm-900 text-white text-xs sm:text-sm hover:bg-warm-700 transition-colors"
+                          className={`px-3 py-1.5 rounded-lg bg-warm-900 text-white text-xs sm:text-sm transition-colors hover:bg-warm-700 ${
+                            hasSoldOutSelected ? "ring-2 ring-red-200/60" : ""
+                          }`}
                         >
-                          Продължи
+                          {hasSoldOutSelected
+                            ? "Продължи (лист за изчакване)"
+                            : "Продължи"}
                         </button>
                       </div>
                     </motion.div>

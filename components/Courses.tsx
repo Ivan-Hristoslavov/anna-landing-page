@@ -9,6 +9,7 @@ interface Course {
   date: string;
   description: string;
   badge?: string;
+  soldOut?: boolean;
 }
 
 interface CityGroup {
@@ -34,6 +35,7 @@ const courseData: CityGroup[] = [
         date: "1 април 2026",
         badge: "1 ден",
         description: "Неинвазивен лифтинг за околоочната зона.",
+        soldOut: true,
       },
       {
         name: "FACE MASSAGE MASTERY LEVEL 1",
@@ -66,6 +68,7 @@ const courseData: CityGroup[] = [
         date: "7 април 2026",
         badge: "1 ден",
         description: "Неинвазивен лифтинг за околоочната зона.",
+        soldOut: true,
       },
       {
         name: "INTRASCULPT™",
@@ -122,6 +125,12 @@ export default function Courses() {
       </span>
     );
   };
+
+  const renderSoldOutPill = () => (
+    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
+      Sold out
+    </span>
+  );
 
   return (
     <section id="courses" className="section-padding bg-parchment">
@@ -186,7 +195,10 @@ export default function Courses() {
                       <h4 className="font-playfair text-lg md:text-xl font-medium text-warm-900 group-hover:text-warm-700 transition-colors">
                         {course.name}
                       </h4>
-                      {course.badge && renderCourseBadge(course.badge)}
+                      <div className="flex flex-col items-end gap-2">
+                        {course.badge && renderCourseBadge(course.badge)}
+                        {course.soldOut && renderSoldOutPill()}
+                      </div>
                     </div>
                     <p className="text-sm font-medium text-warm-500 mb-3 flex items-center gap-2">
                       <span className="w-4 h-px bg-warm-300 inline-block" />
