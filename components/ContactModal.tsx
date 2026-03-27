@@ -178,7 +178,7 @@ export default function ContactModal() {
           ]
         : []),
       "",
-      `Иme и фамилия: ${name || "—"}`,
+      `Име и фамилия: ${name || "—"}`,
       `Телефон за връзка: ${phone || "—"}`,
       "",
       "Допълнително съобщение:",
@@ -468,7 +468,7 @@ export default function ContactModal() {
                 {/* Name */}
                 <div>
                   <label className="label-sm block mb-1.5">
-                    Иme и фамилия{" "}
+                    Име и фамилия{" "}
                     <span className="text-warm-400 normal-case font-light">
                       *
                     </span>
@@ -481,7 +481,7 @@ export default function ContactModal() {
                         setFormErrors((prev) => ({ ...prev, name: false }));
                       }
                     }}
-                    placeholder="Вашето иme и фамилия"
+                    placeholder="Вашето име и фамилия"
                     className={`w-full border rounded-xl px-3.5 py-2.5 text-sm text-warm-900 placeholder:text-warm-400 bg-warm-50 focus:outline-none transition-colors ${
                       formErrors.name
                         ? "border-red-300 focus:border-red-400"
@@ -490,7 +490,7 @@ export default function ContactModal() {
                   />
                   {formErrors.name && (
                     <p className="text-[11px] text-red-400 mt-1">
-                      Моля, въведете вашето иme.
+                      Моля, въведете вашето име.
                     </p>
                   )}
                 </div>
