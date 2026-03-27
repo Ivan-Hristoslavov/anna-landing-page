@@ -150,7 +150,7 @@ export default function Hero() {
         >
           <span className="flex w-full flex-wrap justify-center">
             {/* Keep the whole subtitle line together (either one line, or move below) */}
-            <span className="whitespace-nowrap text-balance">
+            <span className="whitespace-nowrap text-balance mb-1 sm:mb-1.5">
               INTRASCULPT™ · BLEPH EFFECT™ · FACE MASSAGE MASTERY LEVEL 1
             </span>
           </span>

@@ -40,7 +40,7 @@ const courseData: CityGroup[] = [
       {
         name: "FACE MASSAGE MASTERY LEVEL 1",
         date: "15, 16, 17 юни 2026",
-        badge: "LEVEL 1 · 3 дни",
+        badge: "3 дни",
         description:
           "Изкуство и майсторство на лицевия масаж - Ниво 1.",
       },
@@ -59,7 +59,7 @@ const courseData: CityGroup[] = [
       {
         name: "FACE MASSAGE MASTERY LEVEL 1",
         date: "4, 5, 6 април 2026",
-        badge: "LEVEL 1 · 3 дни",
+        badge: "3 дни",
         description:
           "Изкуство и майсторство на лицевия масаж - Ниво 1.",
       },
