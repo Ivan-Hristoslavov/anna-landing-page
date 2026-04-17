@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useContact } from "@/app/contact-context";
+import { isPastBulgarianScheduleLabel } from "@/lib/bg-schedule-past";
+import { useClientScheduleReferenceDate } from "@/hooks/use-client-schedule-reference-date";
 
 interface Course {
   name: string;
@@ -10,6 +12,11 @@ interface Course {
   description: string;
   badge?: string;
   soldOut?: boolean;
+  /** Теория, провеждана онлайн (показва се под датите на практиката). */
+  theoryOnline?: string;
+  price?: string;
+  /** Пълен низ за синхрон с формата за контакт (дати + теория + цена). */
+  sessionLabel?: string;
 }
 
 interface CityGroup {
@@ -39,14 +46,20 @@ const courseData: CityGroup[] = [
       },
       {
         name: "FACE MASSAGE MASTERY LEVEL 1",
-        date: "15, 16, 17 юни 2026",
+        date: "Практика (София): 17, 18, 19 юни 2026",
+        theoryOnline: "събота, 13 юни 2026",
+        price: "€870",
+        sessionLabel:
+          "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
         badge: "3 дни",
         description:
           "Изкуство и майсторство на лицевия масаж - Ниво 1.",
       },
       {
         name: "BLEPH EFFECT™",
-        date: "18 юни 2026",
+        date: "22 юни 2026",
+        price: "€370",
+        sessionLabel: "22 юни 2026 · €370",
         badge: "1 ден",
         description: "Неинвазивен лифтинг за околоочната зона.",
       },
@@ -105,6 +118,7 @@ const itemVariants = {
 
 export default function Courses() {
   const { openContact } = useContact();
+  const scheduleRef = useClientScheduleReferenceDate();
 
   const renderCourseBadge = (badge: string) => {
     const parts = badge.split("·").map((p) => p.trim());
@@ -129,6 +143,12 @@ export default function Courses() {
   const renderSoldOutPill = () => (
     <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
       Sold out
+    </span>
+  );
+
+  const renderExpiredPill = () => (
+    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-warm-600 bg-warm-100 border border-warm-300 px-2.5 py-1 rounded-full">
+      Изтекла дата
     </span>
   );
 
@@ -185,11 +205,20 @@ export default function Courses() {
                 viewport={{ once: true, margin: "-40px" }}
                 className="space-y-4"
               >
-                {group.courses.map((course, ci) => (
+                {group.courses.map((course, ci) => {
+                  const isPast = isPastBulgarianScheduleLabel(
+                    course.date,
+                    scheduleRef
+                  );
+                  return (
                   <motion.div
                     key={`${group.city}-${ci}`}
                     variants={itemVariants}
-                    className="group bg-white rounded-2xl border border-warm-100 p-6 hover:border-warm-300 hover:shadow-[0_14px_45px_rgba(35,30,27,0.12)] hover:-translate-y-0.5 transition-all duration-300"
+                    className={`group bg-white rounded-2xl border border-warm-100 p-6 transition-all duration-300 ${
+                      isPast
+                        ? "opacity-[0.88] border-warm-200"
+                        : "hover:border-warm-300 hover:shadow-[0_14px_45px_rgba(35,30,27,0.12)] hover:-translate-y-0.5"
+                    }`}
                   >
                     <div className="flex items-start justify-between gap-4 mb-3">
                       <h4 className="font-playfair text-lg md:text-xl font-medium text-warm-900 group-hover:text-warm-700 transition-colors">
@@ -198,28 +227,56 @@ export default function Courses() {
                       <div className="flex flex-col items-end gap-2">
                         {course.badge && renderCourseBadge(course.badge)}
                         {course.soldOut && renderSoldOutPill()}
+                        {isPast && renderExpiredPill()}
                       </div>
                     </div>
-                    <p className="text-sm font-medium text-warm-500 mb-3 flex items-center gap-2">
-                      <span className="w-4 h-px bg-warm-300 inline-block" />
-                      {course.date}
-                    </p>
+                    <div className="text-sm font-medium text-warm-500 mb-3 space-y-1.5">
+                      <p className="flex items-center gap-2">
+                        <span className="w-4 h-px bg-warm-300 inline-block shrink-0" />
+                        {course.date}
+                      </p>
+                      {course.theoryOnline ? (
+                        <p className="flex items-start gap-2 pl-6 text-warm-600 font-normal">
+                          <span className="text-warm-400 shrink-0">
+                            Теория (онлайн):
+                          </span>
+                          <span>{course.theoryOnline}</span>
+                        </p>
+                      ) : null}
+                      {course.price ? (
+                        <p className="flex items-center gap-2 pl-6 text-warm-800 font-semibold tracking-wide">
+                          Цена: {course.price}
+                        </p>
+                      ) : null}
+                    </div>
                     <p className="text-sm text-warm-600 font-light leading-relaxed mb-4">
                       {course.description}
                     </p>
-                    <button
-                      onClick={() =>
-                        openContact(course.name, group.city, course.date)
-                      }
-                      className="group/btn inline-flex items-center gap-2 text-[11px] font-medium tracking-widest uppercase text-warm-600 hover:text-warm-900 transition-colors duration-200"
-                    >
-                      Запиши се
-                      <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">
-                        →
-                      </span>
-                    </button>
+                    {isPast ? (
+                      <p className="text-[11px] font-medium tracking-widest uppercase text-warm-400">
+                        Записването за тези дати е приключило
+                      </p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          openContact(
+                            course.name,
+                            group.city,
+                            course.sessionLabel ?? course.date
+                          )
+                        }
+                        className="group/btn inline-flex items-center gap-2 text-[11px] font-medium tracking-widest uppercase text-warm-600 hover:text-warm-900 transition-colors duration-200"
+                      >
+                        Запиши се
+                        <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">
+                          →
+                        </span>
+                      </button>
+                    )}
                   </motion.div>
-                ))}
+                  );
+                })}
               </motion.div>
             </motion.div>
           ))}
