@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useContact } from "@/app/contact-context";
 import { isPastBulgarianScheduleLabel } from "@/lib/bg-schedule-past";
@@ -92,6 +93,17 @@ export default function Timeline() {
   const { openContact } = useContact();
   const scheduleRef = useClientScheduleReferenceDate();
 
+  const orderedEvents = useMemo(() => {
+    if (scheduleRef == null) return events;
+    const upcoming = events.filter(
+      (e) => !isPastBulgarianScheduleLabel(e.date, scheduleRef)
+    );
+    const past = events.filter((e) =>
+      isPastBulgarianScheduleLabel(e.date, scheduleRef)
+    );
+    return [...upcoming, ...past];
+  }, [scheduleRef]);
+
   function contactDateFor(event: TimelineEvent) {
     return event.contactDate ?? event.date;
   }
@@ -148,7 +160,7 @@ export default function Timeline() {
           <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-warm-100 md:-translate-x-px" />
 
           <div className="space-y-0">
-            {events.map((event, i) => {
+            {orderedEvents.map((event, i) => {
               const isLeft = i % 2 === 0;
               const styles = cityStyles[event.cityColor];
               const isPastEvent = isPastBulgarianScheduleLabel(
@@ -158,7 +170,7 @@ export default function Timeline() {
 
               return (
                 <motion.div
-                  key={i}
+                  key={`${event.date}-${event.name}-${event.city}`}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}

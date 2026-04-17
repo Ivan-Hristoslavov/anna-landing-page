@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useContact } from "@/app/contact-context";
@@ -120,6 +121,19 @@ export default function Courses() {
   const { openContact } = useContact();
   const scheduleRef = useClientScheduleReferenceDate();
 
+  const orderedCourseData = useMemo(() => {
+    if (scheduleRef == null) return courseData;
+    return courseData.map((group) => {
+      const upcoming = group.courses.filter(
+        (c) => !isPastBulgarianScheduleLabel(c.date, scheduleRef)
+      );
+      const past = group.courses.filter((c) =>
+        isPastBulgarianScheduleLabel(c.date, scheduleRef)
+      );
+      return { ...group, courses: [...upcoming, ...past] };
+    });
+  }, [scheduleRef]);
+
   const renderCourseBadge = (badge: string) => {
     const parts = badge.split("·").map((p) => p.trim());
     const isSplit = parts.length === 2 && parts[0] && parts[1];
@@ -175,7 +189,7 @@ export default function Courses() {
 
         {/* City columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 xl:gap-16">
-          {courseData.map((group, gi) => (
+          {orderedCourseData.map((group, gi) => (
             <motion.div
               key={group.city}
               initial={{ opacity: 0, y: 32 }}
@@ -212,7 +226,7 @@ export default function Courses() {
                   );
                   return (
                   <motion.div
-                    key={`${group.city}-${ci}`}
+                    key={`${group.city}-${course.date}-${course.name}`}
                     variants={itemVariants}
                     className={`group bg-white rounded-2xl border border-warm-100 p-6 transition-all duration-300 ${
                       isPast
