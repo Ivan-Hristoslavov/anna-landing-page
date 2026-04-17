@@ -3,6 +3,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContact } from "@/app/contact-context";
+import { isPastBulgarianScheduleLabel } from "@/lib/bg-schedule-past";
+import { useClientScheduleReferenceDate } from "@/hooks/use-client-schedule-reference-date";
 
 const EMAIL = "contact@anna.london";
 
@@ -16,8 +18,11 @@ const SCHEDULE: Record<string, Session[]> = {
   "София": [
     { course: "INTRASCULPT™",            date: "30–31 март 2026" },
     { course: "BLEPH EFFECT™",             date: "1 април 2026", soldOut: true },
-    { course: "FACE MASSAGE MASTERY LEVEL 1", date: "15, 16, 17 юни 2026" },
-    { course: "BLEPH EFFECT™",             date: "18 юни 2026" },
+    {
+      course: "FACE MASSAGE MASTERY LEVEL 1",
+      date: "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
+    },
+    { course: "BLEPH EFFECT™", date: "22 юни 2026 · €370" },
   ],
   "Варна": [
     { course: "FACE MASSAGE MASTERY LEVEL 1", date: "4, 5, 6 април 2026" },
@@ -28,6 +33,7 @@ const SCHEDULE: Record<string, Session[]> = {
 
 export default function ContactModal() {
   const { state, closeContact } = useContact();
+  const scheduleRef = useClientScheduleReferenceDate();
 
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState("");
@@ -59,7 +65,11 @@ export default function ContactModal() {
 
     if (course && date) {
       const preSession = `${course} — ${date}`;
-      setSelectedSessions([preSession]);
+      if (!isPastBulgarianScheduleLabel(date, scheduleRef)) {
+        setSelectedSessions([preSession]);
+      } else {
+        setSelectedSessions([]);
+      }
     } else {
       setSelectedSessions([]);
     }
@@ -74,7 +84,7 @@ export default function ContactModal() {
       phone: false,
     });
     setIsConfirmOpen(false);
-  }, [state.isOpen, state.course, state.city, state.date]);
+  }, [state.isOpen, state.course, state.city, state.date, scheduleRef]);
 
   const availableCourses = useMemo<string[]>(() => {
     if (!selectedCity) return [];
@@ -100,20 +110,32 @@ export default function ContactModal() {
     );
   }, [selectedCity]);
 
+  const expiredSessionValues = useMemo<Set<string>>(() => {
+    const all = SCHEDULE[selectedCity] ?? [];
+    return new Set(
+      all
+        .filter((s) => isPastBulgarianScheduleLabel(s.date, scheduleRef))
+        .map((s) => `${s.course} — ${s.date}`)
+    );
+  }, [selectedCity, scheduleRef]);
+
   const hasSoldOutSelected = selectedSessions.some((s) =>
     soldOutSessionValues.has(s)
   );
 
-  // Keep only sessions that still appear in the filtered list
+  // Keep only sessions that still appear in the filtered list и не са изтекли
   useEffect(() => {
     if (!selectedSessions.length) return;
     const availableValues = new Set(
       availableSessions.map((s) => `${s.course} — ${s.date}`)
     );
     setSelectedSessions((prev) =>
-      prev.filter((session) => availableValues.has(session))
+      prev.filter(
+        (session) =>
+          availableValues.has(session) && !expiredSessionValues.has(session)
+      )
     );
-  }, [availableSessions, selectedSessions.length]);
+  }, [availableSessions, selectedSessions.length, expiredSessionValues]);
 
   // Close on Escape
   useEffect(() => {
@@ -139,6 +161,7 @@ export default function ContactModal() {
   };
 
   const toggleSession = (sessionValue: string) => {
+    if (expiredSessionValues.has(sessionValue)) return;
     setSelectedSessions((prev) =>
       prev.includes(sessionValue)
         ? prev.filter((session) => session !== sessionValue)
@@ -387,17 +410,24 @@ export default function ContactModal() {
                           const val = `${s.course} — ${s.date}`;
                           const checked = selectedSessions.includes(val);
                           const isSoldOut = !!s.soldOut;
+                          const isExpired = isPastBulgarianScheduleLabel(
+                            s.date,
+                            scheduleRef
+                          );
                           return (
                             <button
                               key={val}
                               type="button"
+                              disabled={isExpired}
                               onClick={() => toggleSession(val)}
                               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-sm text-left transition-all duration-200 ${
-                                checked
-                                  ? "border-warm-700 bg-warm-900 text-white"
-                                  : isSoldOut
-                                    ? "border-red-200 bg-red-50 text-red-700 hover:border-red-300"
-                                    : "border-warm-200 bg-warm-50 text-warm-700 hover:border-warm-400"
+                                isExpired
+                                  ? "border-warm-200 bg-warm-100 text-warm-500 cursor-not-allowed opacity-90"
+                                  : checked
+                                    ? "border-warm-700 bg-warm-900 text-white"
+                                    : isSoldOut
+                                      ? "border-red-200 bg-red-50 text-red-700 hover:border-red-300"
+                                      : "border-warm-200 bg-warm-50 text-warm-700 hover:border-warm-400"
                               }`}
                             >
                               <span
@@ -427,11 +457,15 @@ export default function ContactModal() {
                               <span className="flex-1">
                                 {s.course} — {s.date}
                               </span>
-                              {s.soldOut && (
+                              {isExpired ? (
+                                <span className="shrink-0 text-[10px] font-semibold tracking-widest text-warm-600 bg-warm-50 border border-warm-300 px-2.5 py-1 rounded-full">
+                                  Изтекла дата
+                                </span>
+                              ) : s.soldOut ? (
                                 <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
                                   Sold out
                                 </span>
-                              )}
+                              ) : null}
                             </button>
                           );
                         })}

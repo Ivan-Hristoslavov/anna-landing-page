@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useContact } from "@/app/contact-context";
+import { isPastBulgarianScheduleLabel } from "@/lib/bg-schedule-past";
+import { useClientScheduleReferenceDate } from "@/hooks/use-client-schedule-reference-date";
 
 interface TimelineEvent {
   date: string;
@@ -10,6 +12,10 @@ interface TimelineEvent {
   cityColor: "sofia" | "varna";
   duration: string;
   soldOut?: boolean;
+  /** Допълнителен ред (теория онлайн, цена и т.н.) */
+  detail?: string;
+  /** Низ за формата за контакт — трябва да съвпада с SCHEDULE в ContactModal. */
+  contactDate?: string;
 }
 
 const events: TimelineEvent[] = [
@@ -51,14 +57,19 @@ const events: TimelineEvent[] = [
     duration: "2 дни",
   },
   {
-    date: "15–17 юни 2026",
+    date: "17–19 юни 2026",
+    detail: "Практика (София). Теория (онлайн): събота, 13 юни · €870",
+    contactDate:
+      "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
     name: "FACE MASSAGE MASTERY LEVEL 1",
     city: "София",
     cityColor: "sofia",
     duration: "3 дни",
   },
   {
-    date: "18 юни 2026",
+    date: "22 юни 2026",
+    detail: "€370",
+    contactDate: "22 юни 2026 · €370",
     name: "BLEPH EFFECT™",
     city: "София",
     cityColor: "sofia",
@@ -79,10 +90,21 @@ const cityStyles = {
 
 export default function Timeline() {
   const { openContact } = useContact();
+  const scheduleRef = useClientScheduleReferenceDate();
+
+  function contactDateFor(event: TimelineEvent) {
+    return event.contactDate ?? event.date;
+  }
 
   const renderSoldOutPill = () => (
     <span className="shrink-0 text-[10px] font-semibold tracking-widest text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
       Sold out
+    </span>
+  );
+
+  const renderExpiredPill = () => (
+    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-warm-600 bg-warm-100 border border-warm-300 px-2.5 py-1 rounded-full">
+      Изтекла дата
     </span>
   );
 
@@ -129,6 +151,10 @@ export default function Timeline() {
             {events.map((event, i) => {
               const isLeft = i % 2 === 0;
               const styles = cityStyles[event.cityColor];
+              const isPastEvent = isPastBulgarianScheduleLabel(
+                event.date,
+                scheduleRef
+              );
 
               return (
                 <motion.div
@@ -160,24 +186,45 @@ export default function Timeline() {
                           {event.duration}
                         </span>
                       </div>
-                      {event.soldOut && (
-                        <div className="mb-2">{renderSoldOutPill()}</div>
+                      {(event.soldOut || isPastEvent) && (
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {event.soldOut && renderSoldOutPill()}
+                          {isPastEvent && renderExpiredPill()}
+                        </div>
                       )}
                       <h4 className="font-playfair text-base sm:text-lg font-medium text-warm-900 mb-1">
                         {event.name}
                       </h4>
-                      <p className="text-xs text-warm-500 font-light mb-3">
+                      <p
+                        className={`text-xs text-warm-500 font-light ${event.detail ? "mb-1" : "mb-3"}`}
+                      >
                         {event.date}
                       </p>
-                      <button
-                        onClick={() =>
-                          openContact(event.name, event.city, event.date)
-                        }
-                        className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
-                      >
-                        Запиши се
-                        <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
-                      </button>
+                      {event.detail ? (
+                        <p className="text-[11px] text-warm-400 font-light mb-3 leading-relaxed">
+                          {event.detail}
+                        </p>
+                      ) : null}
+                      {isPastEvent ? (
+                        <p className="text-[10px] font-medium tracking-widest uppercase text-warm-400">
+                          Записването е приключило
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            openContact(
+                              event.name,
+                              event.city,
+                              contactDateFor(event)
+                            )
+                          }
+                          className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                        >
+                          Запиши се
+                          <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -199,27 +246,46 @@ export default function Timeline() {
                               {event.city}
                             </span>
                           </div>
-                          {event.soldOut && (
-                            <div className="flex justify-end mb-2">
-                              {renderSoldOutPill()}
+                          {(event.soldOut || isPastEvent) && (
+                            <div className="flex flex-wrap justify-end gap-2 mb-2">
+                              {event.soldOut && renderSoldOutPill()}
+                              {isPastEvent && renderExpiredPill()}
                             </div>
                           )}
                           <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1 text-right">
                             {event.name}
                           </h4>
-                          <p className="text-xs text-warm-500 font-light text-right mb-3">
+                          <p
+                            className={`text-xs text-warm-500 font-light text-right ${event.detail ? "mb-1" : "mb-3"}`}
+                          >
                             {event.date}
                           </p>
+                          {event.detail ? (
+                            <p className="text-[11px] text-warm-400 font-light text-right mb-3 leading-relaxed">
+                              {event.detail}
+                            </p>
+                          ) : null}
                           <div className="flex justify-end">
-                            <button
-                              onClick={() =>
-                                openContact(event.name, event.city, event.date)
-                              }
-                              className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
-                            >
-                              Запиши се
-                              <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
-                            </button>
+                            {isPastEvent ? (
+                              <p className="text-[10px] font-medium tracking-widest uppercase text-warm-400 text-right">
+                                Записването е приключило
+                              </p>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openContact(
+                                    event.name,
+                                    event.city,
+                                    contactDateFor(event)
+                                  )
+                                }
+                                className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                              >
+                                Запиши се
+                                <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                              </button>
+                            )}
                           </div>
                         </div>
                       )}
@@ -248,24 +314,45 @@ export default function Timeline() {
                               {event.duration}
                             </span>
                           </div>
-                          {event.soldOut && (
-                            <div className="mb-2">{renderSoldOutPill()}</div>
+                          {(event.soldOut || isPastEvent) && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              {event.soldOut && renderSoldOutPill()}
+                              {isPastEvent && renderExpiredPill()}
+                            </div>
                           )}
                           <h4 className="font-playfair text-lg font-medium text-warm-900 mb-1">
                             {event.name}
                           </h4>
-                          <p className="text-xs text-warm-500 font-light mb-3">
+                          <p
+                            className={`text-xs text-warm-500 font-light ${event.detail ? "mb-1" : "mb-3"}`}
+                          >
                             {event.date}
                           </p>
-                          <button
-                            onClick={() =>
-                              openContact(event.name, event.city, event.date)
-                            }
-                            className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
-                          >
-                            Запиши се
-                            <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
-                          </button>
+                          {event.detail ? (
+                            <p className="text-[11px] text-warm-400 font-light mb-3 leading-relaxed">
+                              {event.detail}
+                            </p>
+                          ) : null}
+                          {isPastEvent ? (
+                            <p className="text-[10px] font-medium tracking-widest uppercase text-warm-400">
+                              Записването е приключило
+                            </p>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                openContact(
+                                  event.name,
+                                  event.city,
+                                  contactDateFor(event)
+                                )
+                              }
+                              className="group/btn inline-flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase text-warm-400 hover:text-warm-900 transition-colors duration-200"
+                            >
+                              Запиши се
+                              <span className="inline-block transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
