@@ -37,6 +37,7 @@ const courseData: CityGroup[] = [
         badge: "2 дни",
         description:
           "Напреднала техника за трансбукален контур, ремоделиране и освобождаване на напрежението на средната и долна част на лицето.",
+        soldOut: true,
       },
       {
         name: "BLEPH EFFECT™",
@@ -46,7 +47,7 @@ const courseData: CityGroup[] = [
         soldOut: true,
       },
       {
-        name: "FACE MASSAGE MASTERY LEVEL 1",
+        name: "FaceCode™ - The art of face massage mastery",
         date: "Практика (София): 17, 18, 19 юни 2026",
         theoryOnline: "събота, 13 юни 2026",
         price: "€870",
@@ -54,15 +55,7 @@ const courseData: CityGroup[] = [
           "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
         badge: "3 дни",
         description:
-          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
-      },
-      {
-        name: "BLEPH EFFECT™",
-        date: "22 юни 2026",
-        price: "€370",
-        sessionLabel: "22 юни 2026 · €370",
-        badge: "1 ден",
-        description: "Неинвазивен лифтинг за околоочната зона.",
+          "With added sentence - art of face massage mastery.",
       },
     ],
   },
@@ -71,11 +64,13 @@ const courseData: CityGroup[] = [
     cityEn: "Varna",
     courses: [
       {
-        name: "FACE MASSAGE MASTERY LEVEL 1",
+        name: "FaceCode™ - art of face massage mastery",
+   
         date: "4, 5, 6 април 2026",
         badge: "3 дни",
         description:
-          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
+          "With added sentence - art of face massage mastery.",
+        soldOut: true,
       },
       {
         name: "BLEPH EFFECT™",
@@ -90,6 +85,7 @@ const courseData: CityGroup[] = [
         badge: "2 дни",
         description:
           "Напреднала техника за трансбукален контур, ремоделиране и освобождаване на напрежението на средната и долна част на лицето.",
+        soldOut: true,
       },
     ],
   },

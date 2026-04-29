@@ -26,6 +26,7 @@ const events: TimelineEvent[] = [
     city: "София",
     cityColor: "sofia",
     duration: "2 дни",
+    soldOut: true,
   },
   {
     date: "1 април 2026",
@@ -37,10 +38,11 @@ const events: TimelineEvent[] = [
   },
   {
     date: "4–6 април 2026",
-    name: "FACE MASSAGE MASTERY LEVEL 1",
-    city: "Варна",
+    name: "FaceCode™ - The art of face massage mastery",
+    city: "Варна",  
     cityColor: "varna",
     duration: "3 дни",
+    soldOut: true,
   },
   {
     date: "7 април 2026",
@@ -56,25 +58,17 @@ const events: TimelineEvent[] = [
     city: "Варна",
     cityColor: "varna",
     duration: "2 дни",
+    soldOut: true,
   },
   {
     date: "17–19 юни 2026",
     detail: "Практика (София). Теория (онлайн): събота, 13 юни · €870",
     contactDate:
       "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
-    name: "FACE MASSAGE MASTERY LEVEL 1",
+    name: "FaceCode™ - The art of face massage mastery",
     city: "София",
     cityColor: "sofia",
     duration: "3 дни",
-  },
-  {
-    date: "22 юни 2026",
-    detail: "€370",
-    contactDate: "22 юни 2026 · €370",
-    name: "BLEPH EFFECT™",
-    city: "София",
-    cityColor: "sofia",
-    duration: "1 ден",
   },
 ];
 

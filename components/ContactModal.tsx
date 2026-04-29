@@ -15,20 +15,19 @@ interface Session {
 }
 
 const SCHEDULE: Record<string, Session[]> = {
-  "София": [
-    { course: "INTRASCULPT™",            date: "30–31 март 2026" },
-    { course: "BLEPH EFFECT™",             date: "1 април 2026", soldOut: true },
+  София: [
+    //{ course: "INTRASCULPT™", date: "30–31 март 2026", soldOut: true },
+    //{ course: "BLEPH EFFECT™", date: "1 април 2026", soldOut: true },
     {
-      course: "FACE MASSAGE MASTERY LEVEL 1",
+      course: "FaceCode™ - The art of face massage mastery",
       date: "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
-    },
-    { course: "BLEPH EFFECT™", date: "22 юни 2026 · €370" },
+    },  
   ],
-  "Варна": [
-    { course: "FACE MASSAGE MASTERY LEVEL 1", date: "4, 5, 6 април 2026" },
-    { course: "BLEPH EFFECT™",             date: "7 април 2026", soldOut: true },
-    { course: "INTRASCULPT™",            date: "8–9 април 2026" },
-  ],
+  // Варна: [
+  //   //{ course: "FaceCode™ - The art of face massage mastery", date: "4, 5, 6 април 2026", soldOut: true },
+  //   //{ course: "BLEPH EFFECT™", date: "7 април 2026", soldOut: true },
+  //   //{ course: "INTRASCULPT™", date: "8–9 април 2026", soldOut: true },
+  // ],
 };
 
 export default function ContactModal() {
@@ -41,7 +40,7 @@ export default function ContactModal() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [msg, setMsg] = useState(
-    "Моля, потвърдете наличните места и условията за участие."
+    "Моля, потвърдете наличните места и условията за участие.",
   );
   const [formErrors, setFormErrors] = useState({
     courses: false,
@@ -89,7 +88,7 @@ export default function ContactModal() {
   const availableCourses = useMemo<string[]>(() => {
     if (!selectedCity) return [];
     const uniqueCourses = new Set(
-      (SCHEDULE[selectedCity] ?? []).map((session) => session.course)
+      (SCHEDULE[selectedCity] ?? []).map((session) => session.course),
     );
     return Array.from(uniqueCourses);
   }, [selectedCity]);
@@ -104,9 +103,7 @@ export default function ContactModal() {
   const soldOutSessionValues = useMemo<Set<string>>(() => {
     const all = SCHEDULE[selectedCity] ?? [];
     return new Set(
-      all
-        .filter((s) => s.soldOut)
-        .map((s) => `${s.course} — ${s.date}`)
+      all.filter((s) => s.soldOut).map((s) => `${s.course} — ${s.date}`),
     );
   }, [selectedCity]);
 
@@ -115,25 +112,25 @@ export default function ContactModal() {
     return new Set(
       all
         .filter((s) => isPastBulgarianScheduleLabel(s.date, scheduleRef))
-        .map((s) => `${s.course} — ${s.date}`)
+        .map((s) => `${s.course} — ${s.date}`),
     );
   }, [selectedCity, scheduleRef]);
 
   const hasSoldOutSelected = selectedSessions.some((s) =>
-    soldOutSessionValues.has(s)
+    soldOutSessionValues.has(s),
   );
 
   // Keep only sessions that still appear in the filtered list и не са изтекли
   useEffect(() => {
     if (!selectedSessions.length) return;
     const availableValues = new Set(
-      availableSessions.map((s) => `${s.course} — ${s.date}`)
+      availableSessions.map((s) => `${s.course} — ${s.date}`),
     );
     setSelectedSessions((prev) =>
       prev.filter(
         (session) =>
-          availableValues.has(session) && !expiredSessionValues.has(session)
-      )
+          availableValues.has(session) && !expiredSessionValues.has(session),
+      ),
     );
   }, [availableSessions, selectedSessions.length, expiredSessionValues]);
 
@@ -155,7 +152,7 @@ export default function ContactModal() {
     setSelectedCourses((prev) =>
       prev.includes(courseName)
         ? prev.filter((c) => c !== courseName)
-        : [...prev, courseName]
+        : [...prev, courseName],
     );
     setFormErrors((prev) => ({ ...prev, courses: false }));
   };
@@ -165,7 +162,7 @@ export default function ContactModal() {
     setSelectedSessions((prev) =>
       prev.includes(sessionValue)
         ? prev.filter((session) => session !== sessionValue)
-        : [...prev, sessionValue]
+        : [...prev, sessionValue],
     );
     setFormErrors((prev) => ({ ...prev, sessions: false }));
   };
@@ -177,7 +174,10 @@ export default function ContactModal() {
       : "—";
     const sessionList = selectedSessions.length
       ? selectedSessions
-          .map((s) => `${s}${soldOutSessionValues.has(s) ? " (лист за изчакване)" : ""}`)
+          .map(
+            (s) =>
+              `${s}${soldOutSessionValues.has(s) ? " (лист за изчакване)" : ""}`,
+          )
           .join(", ")
       : "—";
     const subjectBase = `Записване${selectedCourses[0] ? ` — ${selectedCourses[0]}` : ""}${selectedCity ? ` — ${selectedCity}` : ""}`;
@@ -203,6 +203,11 @@ export default function ContactModal() {
       "",
       `Име и фамилия: ${name || "—"}`,
       `Телефон за връзка: ${phone || "—"}`,
+      "",
+      "Данни за банков превод:",
+      "Получател: FaceGlow LTD",
+      "IBAN: GB87TSBS77724100013973",
+      "BIC: TSBSGB2AXXX",
       "",
       "Допълнително съобщение:",
       msg,
@@ -302,7 +307,10 @@ export default function ContactModal() {
                 {/* City */}
                 <div>
                   <label className="label-sm block mb-1.5">
-                    Град <span className="text-warm-400 normal-case font-light">*</span>
+                    Град{" "}
+                    <span className="text-warm-400 normal-case font-light">
+                      *
+                    </span>
                   </label>
                   <select
                     value={selectedCity}
@@ -325,7 +333,7 @@ export default function ContactModal() {
                   >
                     <option value="">Изберете…</option>
                     <option value="София">София</option>
-                    <option value="Варна">Варна</option>
+                    {/* <option value="Варна">Варна</option> */}
                   </select>
                   {formErrors.city && (
                     <p className="text-[11px] text-red-400 mt-1">
@@ -339,7 +347,9 @@ export default function ContactModal() {
                   <div>
                     <label className="label-sm block mb-2">
                       Обучение{" "}
-                      <span className="text-warm-400 normal-case font-light tracking-normal">*</span>
+                      <span className="text-warm-400 normal-case font-light tracking-normal">
+                        *
+                      </span>
                       <span className="text-warm-400 normal-case font-light tracking-normal ml-1">
                         (може да изберете повече от едно)
                       </span>
@@ -360,7 +370,9 @@ export default function ContactModal() {
                           >
                             <span
                               className={`shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                                checked ? "bg-white border-white" : "border-warm-300"
+                                checked
+                                  ? "bg-white border-white"
+                                  : "border-warm-300"
                               }`}
                             >
                               {checked && (
@@ -398,7 +410,9 @@ export default function ContactModal() {
                   <div>
                     <label className="label-sm block mb-1.5">
                       Дати / сесии
-                      <span className="text-warm-400 normal-case font-light ml-1">*</span>
+                      <span className="text-warm-400 normal-case font-light ml-1">
+                        *
+                      </span>
                     </label>
                     {availableSessions.length === 0 ? (
                       <p className="text-xs text-warm-400 italic">
@@ -412,7 +426,7 @@ export default function ContactModal() {
                           const isSoldOut = !!s.soldOut;
                           const isExpired = isPastBulgarianScheduleLabel(
                             s.date,
-                            scheduleRef
+                            scheduleRef,
                           );
                           return (
                             <button
@@ -491,12 +505,10 @@ export default function ContactModal() {
                 )}
 
                 {/* Date selection hint when no course is selected */}
-                {selectedCity && (
-                  selectedCourses.length === 0 && (
-                    <p className="text-xs text-warm-400 italic">
-                      Изберете обучение, за да се покажат наличните дати.
-                    </p>
-                  )
+                {selectedCity && selectedCourses.length === 0 && (
+                  <p className="text-xs text-warm-400 italic">
+                    Изберете обучение, за да се покажат наличните дати.
+                  </p>
                 )}
 
                 {/* Name */}
@@ -533,7 +545,9 @@ export default function ContactModal() {
                 <div>
                   <label className="label-sm block mb-1.5">
                     Телефон за връзка{" "}
-                    <span className="text-warm-400 normal-case font-light">*</span>
+                    <span className="text-warm-400 normal-case font-light">
+                      *
+                    </span>
                   </label>
                   <input
                     value={phone}
@@ -585,13 +599,15 @@ export default function ContactModal() {
 
                 {/* Hint about mail app */}
                 <p className="text-[11px] text-warm-400 font-light leading-relaxed pb-1">
-                  Бутонът ще отвори вашия имейл клиент с попълнено запитване
-                  до{" "}
-                  <span className="text-warm-600">{EMAIL}</span>.
-                  {" "}Ако браузърът поиска разрешение — изберете{" "}
-                  <span className="text-warm-600 font-medium">„Open Mail"</span>
-                  {" "}или поставете отметка{" "}
-                  <span className="text-warm-600 font-medium">„Always allow"</span>.
+                  Бутонът ще отвори вашия имейл клиент с попълнено запитване до{" "}
+                  <span className="text-warm-600">{EMAIL}</span>. Ако браузърът
+                  поиска разрешение — изберете{" "}
+                  <span className="text-warm-600 font-medium">„Open Mail"</span>{" "}
+                  или поставете отметка{" "}
+                  <span className="text-warm-600 font-medium">
+                    „Always allow"
+                  </span>
+                  .
                 </p>
               </div>
 
@@ -617,8 +633,8 @@ export default function ContactModal() {
                         Потвърждение
                       </p>
                       <p className="text-xs sm:text-sm text-warm-600 leading-relaxed mb-4">
-                        Ще отворим вашия имейл клиент с вече попълнени данни от формата.
-                        Няма нужда да ги въвеждате отново.
+                        Ще отворим вашия имейл клиент с вече попълнени данни от
+                        формата. Няма нужда да ги въвеждате отново.
                       </p>
                       <div className="flex items-center justify-end gap-2">
                         <button
