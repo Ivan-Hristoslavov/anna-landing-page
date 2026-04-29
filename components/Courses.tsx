@@ -55,7 +55,7 @@ const courseData: CityGroup[] = [
           "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
         badge: "3 дни",
         description:
-          "With added sentence - art of face massage mastery.",
+          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
       },
     ],
   },
@@ -64,12 +64,12 @@ const courseData: CityGroup[] = [
     cityEn: "Varna",
     courses: [
       {
-        name: "FaceCode™ - art of face massage mastery",
+        name: "FaceCode™ - The art of face massage mastery",
    
         date: "4, 5, 6 април 2026",
         badge: "3 дни",
         description:
-          "With added sentence - art of face massage mastery.",
+          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
         soldOut: true,
       },
       {
