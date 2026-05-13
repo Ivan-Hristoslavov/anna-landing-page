@@ -7,6 +7,14 @@ import { isPastBulgarianScheduleLabel } from "@/lib/bg-schedule-past";
 import { useClientScheduleReferenceDate } from "@/hooks/use-client-schedule-reference-date";
 
 const EMAIL = "contact@anna.london";
+const PAYMENT_DETAILS = [
+  "Получател: FaceGlow LTD",
+  "IBAN: GB87TSBS77724100013973",
+  "BIC: TSBSGB2AXXX",
+] as const;
+const PAYMENT_REFERENCE_NOTE = "Моля, напишете вашите имена за референция.";
+const DEFAULT_MESSAGE =
+  "Здравейте, бих искала/искал да се запиша за настоящият курс и потвърждавам мястото с превеждане на пълната сума по банков превод към посочената тук сметка. Благодаря";
 
 interface Session {
   course: string;
@@ -19,12 +27,12 @@ const SCHEDULE: Record<string, Session[]> = {
     //{ course: "INTRASCULPT™", date: "30–31 март 2026", soldOut: true },
     //{ course: "BLEPH EFFECT™", date: "1 април 2026", soldOut: true },
     {
-      course: "FaceCode™ - The art of face massage mastery",
+      course: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа",
       date: "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
     },  
   ],
   // Варна: [
-  //   //{ course: "FaceCode™ - The art of face massage mastery", date: "4, 5, 6 април 2026", soldOut: true },
+  //   //{ course: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа", date: "4, 5, 6 април 2026", soldOut: true },
   //   //{ course: "BLEPH EFFECT™", date: "7 април 2026", soldOut: true },
   //   //{ course: "INTRASCULPT™", date: "8–9 април 2026", soldOut: true },
   // ],
@@ -38,15 +46,15 @@ export default function ContactModal() {
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedSessions, setSelectedSessions] = useState<string[]>([]); // ["CourseName — date", ...]
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [msg, setMsg] = useState(
-    "Моля, потвърдете наличните места и условията за участие.",
-  );
+  const [msg, setMsg] = useState(DEFAULT_MESSAGE);
   const [formErrors, setFormErrors] = useState({
     courses: false,
     city: false,
     sessions: false,
     name: false,
+    email: false,
     phone: false,
   });
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -73,13 +81,15 @@ export default function ContactModal() {
       setSelectedSessions([]);
     }
     setName("");
+    setEmail("");
     setPhone("");
-    setMsg("Моля, потвърдете наличните места и условията за участие.");
+    setMsg(DEFAULT_MESSAGE);
     setFormErrors({
       courses: false,
       city: false,
       sessions: false,
       name: false,
+      email: false,
       phone: false,
     });
     setIsConfirmOpen(false);
@@ -202,12 +212,11 @@ export default function ContactModal() {
         : []),
       "",
       `Име и фамилия: ${name || "—"}`,
+      `Имейл: ${email.trim() || "—"}`,
       `Телефон за връзка: ${phone || "—"}`,
       "",
       "Данни за банков превод:",
-      "Получател: FaceGlow LTD",
-      "IBAN: GB87TSBS77724100013973",
-      "BIC: TSBSGB2AXXX",
+      ...PAYMENT_DETAILS,
       "",
       "Допълнително съобщение:",
       msg,
@@ -224,16 +233,20 @@ export default function ContactModal() {
     soldOutSessionValues,
     hasSoldOutSelected,
     name,
+    email,
     phone,
     msg,
   ]);
 
   const handleSubmitClick = () => {
+    const emailValue = email.trim();
+    const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
     const nextErrors = {
       courses: selectedCourses.length === 0,
       city: !selectedCity,
       sessions: selectedSessions.length === 0,
       name: !name.trim(),
+      email: !emailValue || !hasValidEmail,
       phone: !phone.trim(),
     };
 
@@ -541,6 +554,41 @@ export default function ContactModal() {
                   )}
                 </div>
 
+                {/* Email */}
+                <div>
+                  <label className="label-sm block mb-1.5">
+                    Имейл адрес{" "}
+                    <span className="text-warm-400 normal-case font-light">
+                      *
+                    </span>
+                  </label>
+                  <input
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      const emailValue = e.target.value.trim();
+                      const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                        emailValue,
+                      );
+                      if (hasValidEmail) {
+                        setFormErrors((prev) => ({ ...prev, email: false }));
+                      }
+                    }}
+                    type="email"
+                    placeholder="you@example.com"
+                    className={`w-full border rounded-xl px-3.5 py-2.5 text-sm text-warm-900 placeholder:text-warm-400 bg-warm-50 focus:outline-none transition-colors ${
+                      formErrors.email
+                        ? "border-red-300 focus:border-red-400"
+                        : "border-warm-200 focus:border-warm-600"
+                    }`}
+                  />
+                  {formErrors.email && (
+                    <p className="text-[11px] text-red-400 mt-1">
+                      Моля, въведете валиден имейл адрес.
+                    </p>
+                  )}
+                </div>
+
                 {/* Phone */}
                 <div>
                   <label className="label-sm block mb-1.5">
@@ -584,6 +632,20 @@ export default function ContactModal() {
                     rows={3}
                     className="w-full border border-warm-200 rounded-xl px-3.5 py-2.5 text-sm text-warm-900 bg-warm-50 focus:outline-none focus:border-warm-600 transition-colors resize-none leading-relaxed"
                   />
+                </div>
+
+                <div className="rounded-xl border border-warm-200 bg-warm-50 px-4 py-3">
+                  <p className="label-sm mb-2">Данни за банков превод</p>
+                  <div className="space-y-1">
+                    {PAYMENT_DETAILS.map((line) => (
+                      <p key={line} className="text-xs text-warm-700">
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                  <p className="text-xs text-warm-600 mt-2">
+                    {PAYMENT_REFERENCE_NOTE}
+                  </p>
                 </div>
 
                 {/* Submit */}

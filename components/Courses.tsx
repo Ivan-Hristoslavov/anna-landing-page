@@ -47,7 +47,7 @@ const courseData: CityGroup[] = [
         soldOut: true,
       },
       {
-        name: "FaceCode™ - The art of face massage mastery",
+        name: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа",
         date: "Практика (София): 17, 18, 19 юни 2026",
         theoryOnline: "събота, 13 юни 2026",
         price: "€870",
@@ -55,7 +55,7 @@ const courseData: CityGroup[] = [
           "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
         badge: "3 дни",
         description:
-          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
+          "Научете кода за авторския метод на  Анна и наградете уменията си в лимфен дренаж, миофасциални и  лифтинг техники, за да създавате реална трансформация за клиентите, и видими резултати, които те виждат, усещат и търсят отново и отново.",
       },
     ],
   },
@@ -64,15 +64,15 @@ const courseData: CityGroup[] = [
     cityEn: "Varna",
     courses: [
       {
-        name: "FaceCode™ - The art of face massage mastery",
+        name: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа",
    
         date: "4, 5, 6 април 2026",
         badge: "3 дни",
         description:
-          "Изкуство и майсторство на лицевия масаж - Ниво 1.",
+          "Научете кода за авторския метод на  Анна и наградете уменията си в лимфен дренаж, миофасциални и  лифтинг техники, за да създавате реална трансформация за клиентите, и видими резултати, които те виждат, усещат и търсят отново и отново.",
         soldOut: true,
       },
-      {
+      { 
         name: "BLEPH EFFECT™",
         date: "7 април 2026",
         badge: "1 ден",
@@ -96,6 +96,14 @@ const galleryImages = [
   "/images/other/face-massage-1.jpeg",
   "/images/other/face-massage-2.jpeg",
 ];
+
+const PAYMENT_DETAILS = [
+  "Получател: FaceGlow LTD",
+  "IBAN: GB87TSBS77724100013973",
+  "BIC: TSBSGB2AXXX",
+] as const;
+
+const PAYMENT_REFERENCE_NOTE = "Моля, напишете вашите имена за референция.";
 
 const containerVariants = {
   hidden: {},
@@ -135,18 +143,18 @@ export default function Courses() {
     const isSplit = parts.length === 2 && parts[0] && parts[1];
 
     return (
-      <span className="shrink-0 text-[10px] font-medium tracking-wider uppercase text-warm-500 bg-warm-50 border border-warm-200 px-2.5 py-1 rounded-full">
+      <span className="inline-flex items-center gap-2 shrink-0 text-[10px] font-medium tracking-wider uppercase text-warm-500 bg-warm-50 border border-warm-200 px-2.5 py-1 rounded-full whitespace-nowrap">
         {isSplit ? (
-          <span className="flex flex-col items-center leading-tight">
-            <span className="text-[11px] font-semibold tracking-widest text-warm-800">
-              {parts[0]}
-            </span>
-            <span className="text-[10px] mt-0.5">{parts[1]}</span>
-          </span>
+          <>
+            <span className="text-[11px] font-semibold tracking-widest text-warm-800 whitespace-nowrap">{parts[0]}</span>
+            <span className="text-[10px] whitespace-nowrap">{parts[1]}</span>
+          </>
         ) : (
           badge
         )}
       </span>
+ 
+ 
     );
   };
 
@@ -157,7 +165,7 @@ export default function Courses() {
   );
 
   const renderExpiredPill = () => (
-    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-warm-600 bg-warm-100 border border-warm-300 px-2.5 py-1 rounded-full">
+    <span className="shrink-0 text-[10px] font-semibold tracking-widest text-warm-600 bg-warm-100 border border-warm-300 px-2.5 py-1 rounded-full whitespace-nowrap">
       Изтекла дата
     </span>
   );
@@ -181,6 +189,56 @@ export default function Courses() {
           <p className="text-sm text-warm-500 font-light max-w-lg mx-auto leading-relaxed">
             Изберете обучение и натиснете „Запиши се" — ще попълним детайлите автоматично.
           </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mb-12 max-w-3xl mx-auto rounded-2xl border border-warm-200 bg-linear-to-br from-warm-50 to-white px-5 py-5 md:px-7 md:py-6"
+        >
+          <p className="label-sm mb-2">Как да потвърдите записването</p>
+          <p className="text-sm text-warm-600 leading-relaxed mb-5">
+            След изпращане на заявката, следвайте стъпките по-долу за
+            потвърждение на мястото в обучението.
+          </p>
+
+          <div className="space-y-3">
+            <div className="rounded-xl border border-warm-200 bg-white/80 px-4 py-3">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-warm-500 mb-1.5">
+                Стъпка 1
+              </p>
+              <p className="text-sm text-warm-700 leading-relaxed">
+                Изпратете заявката през бутона „Запиши се“ и изчакайте потвърждение
+                от екипа за налично място.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-warm-200 bg-white/80 px-4 py-3">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-warm-500 mb-1.5">
+                Стъпка 2
+              </p>
+              <p className="text-sm text-warm-700 mb-2">Направете банков превод към:</p>
+              <div className="space-y-1">
+                {PAYMENT_DETAILS.map((line) => (
+                  <p key={line} className="text-sm text-warm-800 font-medium">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-warm-200 bg-white/80 px-4 py-3">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-warm-500 mb-1.5">
+                Стъпка 3
+              </p>
+              <p className="text-sm text-warm-700 leading-relaxed">
+                {PAYMENT_REFERENCE_NOTE} След постъпване на сумата ще получите
+                финално потвърждение по имейл.
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* City columns */}
@@ -316,6 +374,7 @@ export default function Courses() {
             ))}
           </div>
         </motion.div>
+
       </div>
     </section>
   );

@@ -38,7 +38,7 @@ const events: TimelineEvent[] = [
   },
   {
     date: "4–6 април 2026",
-    name: "FaceCode™ - The art of face massage mastery",
+    name: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа",
     city: "Варна",  
     cityColor: "varna",
     duration: "3 дни",
@@ -65,7 +65,7 @@ const events: TimelineEvent[] = [
     detail: "Практика (София). Теория (онлайн): събота, 13 юни · €870",
     contactDate:
       "17, 18, 19 юни 2026 (практика) · теория (онлайн): събота, 13 юни 2026 · €870",
-    name: "FaceCode™ - The art of face massage mastery",
+    name: "FaceCode™ - Изкуство u Майсторство във Фейс Масажа",
     city: "София",
     cityColor: "sofia",
     duration: "3 дни",
